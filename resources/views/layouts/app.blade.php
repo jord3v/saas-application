@@ -15,6 +15,9 @@
 
         <!-- Scripts -->
         <script src="{{ global_asset('js/app.js') }}" defer></script>
+
+        <!-- Lib do Stripe -->
+        <script src="https://js.stripe.com/v3/"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

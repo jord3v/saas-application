@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Cashier\Cashier;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -24,8 +26,19 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+        $prices = Cashier::stripe()->prices->all();
+        foreach ($prices as $key => $value) {
+            echo $value;
+        }
     });
+    Route::get('subscriptions/account', [SubscriptionController::class, 'account'])->name('subscriptions.account');
+    Route::get('subscriptions/checkout', [SubscriptionController::class, 'index'])->name('subscriptions.checkout');
+    Route::post('subscriptions/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::get('subscriptions/premium', [SubscriptionController::class, 'premium'])->name('subscriptions.premium')->middleware(['subscribed']);
+    Route::get('subscriptions/invoice/{invoice}', [SubscriptionController::class, 'downloadInvoice'])->name('subscriptions.invoice.download');
+
+    Route::get('subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+    Route::get('subscriptions/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
 });
 
 
