@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Tenant;
+namespace App\Http\Controllers\Central;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 
 class TenantController extends Controller
 {
-    private $user;
+    private $tenant;
     /**
      * Class constructor.
      */
-    public function __construct(User $user)
+    public function __construct(Tenant $tenant)
     {
-        $this->user = $user;
+        $this->tenant = $tenant;
     }
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +24,7 @@ class TenantController extends Controller
      */
     public function index()
     {
-        return view('tenant.dashboard');
+        //
     }
 
     /**
@@ -43,7 +45,10 @@ class TenantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge(['initial_migration_complete' => false]);
+        $tenant = $this->tenant->create($request->all());
+        $tenant->domains()->create(['domain' => $request->domain.'.localhost']);
+        return redirect()->route('_post_tenant_registration', ['token' => $request->token])->domain($request->domain.'.localhost');
     }
 
     /**
@@ -89,21 +94,5 @@ class TenantController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function postTenantRegistration(string $token)
-    {
-        $tenant = tenant();
-
-        if (! $tenant->initial_migration_complete ) {
-            return view('errors.building'); // we're building your site-type view
-        }
-
-        if ($tenant->token === $token) {
-            $user = $this->user->where('email', $tenant->email)->firstOrFail();
-            auth()->login($user, true);
-        }
-        
-        return redirect()->route('dashboard');
     }
 }

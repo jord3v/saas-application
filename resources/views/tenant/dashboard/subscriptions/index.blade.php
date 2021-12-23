@@ -32,7 +32,7 @@
                          <div class="row g-2">
                             <div class="col-4">
                                <label class="form-selectgroup-item flex-fill">
-                                  <input type="radio" name="plan" value="price_1K9hHlLRsHtC2l7QcKUgtxwp" class="form-selectgroup-input" required>
+                                  <input type="radio" name="plan" value="price_1K9sevLRsHtC2l7QfN2G2lBy" class="form-selectgroup-input" required>
                                   <div class="form-selectgroup-label d-flex align-items-center p-3">
                                      <div class="me-3">
                                         <span class="form-selectgroup-check"></span>

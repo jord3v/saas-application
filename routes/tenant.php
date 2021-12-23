@@ -32,6 +32,8 @@ Route::middleware([
             echo $value;
         }
     });
+
+    Route::get('_post_tenant_registration/{token}', [TenantController::class, 'postTenantRegistration'])->name('_post_tenant_registration');
     
     Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
         Route::group(['middleware' => ['subscribed']], function(){

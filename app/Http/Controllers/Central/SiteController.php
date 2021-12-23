@@ -1,20 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Tenant;
+namespace App\Http\Controllers\Central;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class TenantController extends Controller
+class SiteController extends Controller
 {
-    private $user;
-    /**
-     * Class constructor.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +14,7 @@ class TenantController extends Controller
      */
     public function index()
     {
-        return view('tenant.dashboard');
+        return view('welcome');
     }
 
     /**
@@ -89,21 +81,5 @@ class TenantController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function postTenantRegistration(string $token)
-    {
-        $tenant = tenant();
-
-        if (! $tenant->initial_migration_complete ) {
-            return view('errors.building'); // we're building your site-type view
-        }
-
-        if ($tenant->token === $token) {
-            $user = $this->user->where('email', $tenant->email)->firstOrFail();
-            auth()->login($user, true);
-        }
-        
-        return redirect()->route('dashboard');
     }
 }

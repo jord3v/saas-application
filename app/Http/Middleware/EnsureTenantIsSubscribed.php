@@ -23,7 +23,7 @@ class EnsureTenantIsSubscribed
         if(!$subscription && $tenant->created_at->addDays(7) <= now())
             return redirect()->route('subscriptions.checkout');
         
-        if ($subscription->ended())
+        if ($subscription && $subscription->ended())
             return redirect()->route('subscriptions.checkout');
         
         return $next($request);

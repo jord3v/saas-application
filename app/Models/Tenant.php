@@ -32,4 +32,5 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 
         return Carbon::make($accessEndAt)->format("d/m/Y à\s H:i:s");
     }
+    
 }

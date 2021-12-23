@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Central\SiteController;
+use App\Http\Controllers\Central\TenantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [SiteController::class, 'index'])->name('website.index');
+
+
+Route::post('/', [TenantController::class, 'store'])->name('website.store');
