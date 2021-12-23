@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Tenant;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
 
     public function index()
     {
-        return view('dashboard.subscriptions.index', [
+        return view('tenant.dashboard.subscriptions.index', [
             'intent' => tenant()->createSetupIntent()
         ]);
     }
@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
     public function store(Request $request)
     {
         tenant()
-            ->newSubscription('default', 'price_1K4Cb5LRsHtC2l7Qw2BAvWgt')
+            ->newSubscription('default', $request->plan)
             ->create($request->token);
 
         return redirect()->route('subscriptions.premium');
@@ -34,13 +34,15 @@ class SubscriptionController extends Controller
 
     public function premium()
     {
-        return view('dashboard.subscriptions.premium');
+        return view('tenant.dashboard.subscriptions.premium');
     }
 
     public function account()
     {
-        $invoices = tenant()->invoices();
-        return view('dashboard.subscriptions.account', compact('invoices'));
+        $tenant = tenant();
+        $invoices = $tenant->invoices();
+        $subscription = $tenant->subscription('default');
+        return view('tenant.dashboard.subscriptions.account', compact('tenant', 'invoices', 'subscription'));
     }
 
     public function downloadInvoice($invoiceId)
@@ -60,14 +62,14 @@ class SubscriptionController extends Controller
     public function cancel()
     {
         tenant()->subscription('default')->cancel();
-        return redirect()->route('subscriptions.account');
+        return redirect()->route('subscriptions.index');
     }
 
 
     public function resume()
     {
         tenant()->subscription('default')->resume();
-        return redirect()->route('subscriptions.account');
+        return redirect()->route('subscriptions.index');
     }
 
 }

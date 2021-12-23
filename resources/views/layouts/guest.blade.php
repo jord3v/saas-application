@@ -1,24 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ global_asset('css/app.css') }}">
-
-        <!-- Scripts -->
-        <script src="{{ global_asset('js/app.js') }}" defer></script>
-    </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
-            {{ $slot }}
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+      <title>{{ config('app.name', 'Laravel') }}</title>
+      <!-- Stripe JS -->
+   </head>
+   <body>
+    <div class="page page-center">
+        <div class="container-tight py-4">
+          <div class="text-center mb-4">
+            <a href="/" class="navbar-brand navbar-brand-autodark">
+                <x-application-logo height="72"/>
+            </a>
+          </div>
+          {{ $slot }}
         </div>
-    </body>
+      </div>
+   <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+   </body>
 </html>

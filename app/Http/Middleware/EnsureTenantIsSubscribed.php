@@ -16,10 +16,16 @@ class EnsureTenantIsSubscribed
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->user() && !tenant()->subscribed('default')){
-            return redirect()->route('subscriptions.checkout');
-        }
+        $tenant = tenant();
+        
+        $subscription = $tenant->subscription('default');
 
+        if(!$subscription && $tenant->created_at->addDays(7) <= now())
+            return redirect()->route('subscriptions.checkout');
+        
+        if ($subscription->ended())
+            return redirect()->route('subscriptions.checkout');
+        
         return $next($request);
     }
 }

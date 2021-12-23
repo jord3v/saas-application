@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Tenant\SubscriptionController;
+use App\Http\Controllers\Tenant\TenantController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Cashier;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -31,14 +32,19 @@ Route::middleware([
             echo $value;
         }
     });
-    Route::get('subscriptions/account', [SubscriptionController::class, 'account'])->name('subscriptions.account');
-    Route::get('subscriptions/checkout', [SubscriptionController::class, 'index'])->name('subscriptions.checkout');
-    Route::post('subscriptions/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
-    Route::get('subscriptions/premium', [SubscriptionController::class, 'premium'])->name('subscriptions.premium')->middleware(['subscribed']);
-    Route::get('subscriptions/invoice/{invoice}', [SubscriptionController::class, 'downloadInvoice'])->name('subscriptions.invoice.download');
-
-    Route::get('subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
-    Route::get('subscriptions/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
+    
+    Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
+        Route::group(['middleware' => ['subscribed']], function(){
+            Route::get('/', [TenantController::class, 'index'])->name('dashboard');
+        });
+        Route::get('subscriptions', [SubscriptionController::class, 'account'])->name('subscriptions.index');
+        Route::get('subscriptions/checkout', [SubscriptionController::class, 'index'])->name('subscriptions.checkout');
+        Route::post('subscriptions/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+        Route::get('subscriptions/premium', [SubscriptionController::class, 'premium'])->name('subscriptions.premium')->middleware(['subscribed']);
+        Route::get('subscriptions/invoice/{invoice}', [SubscriptionController::class, 'downloadInvoice'])->name('subscriptions.invoice.download');
+        Route::get('subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+        Route::get('subscriptions/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
+    });
 });
 
 
@@ -47,8 +53,5 @@ Route::middleware([
     'universal',
     InitializeTenancyByDomain::class,
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth'])->name('dashboard');
     require __DIR__.'/auth.php';
 });

@@ -1,4 +1,24 @@
 <x-guest-layout>
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    <form class="card card-md" method="POST" action="{{ route('password.email') }}" autocomplete="off">
+        @csrf
+        <div class="card-body">
+          <p class="text-center mb-4">{{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}</p>
+          <div class="mb-3">
+            <x-label for="email" class="form-label" :value="__('Email')" />
+            <x-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus />
+          </div>
+          <div class="form-footer">
+            <x-button class="btn btn-primary w-100">
+                {{ __('Email Password Reset Link') }}
+            </x-button>
+          </div>
+        </div>
+      </form>
+</x-guest-layout>
+
+<x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
