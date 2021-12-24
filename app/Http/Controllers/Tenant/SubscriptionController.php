@@ -14,10 +14,18 @@ class SubscriptionController extends Controller
         $this->middleware(['auth']);
     }
 
-
     public function index()
     {
-        return view('tenant.dashboard.subscriptions.index', [
+        $tenant = tenant();
+        $invoices = $tenant->invoices();
+        $subscription = $tenant->subscription('default');
+        return view('tenant.dashboard.subscriptions.index', compact('tenant', 'invoices', 'subscription'));
+    }
+
+
+    public function checkout()
+    {
+        return view('tenant.dashboard.subscriptions.checkout', [
             'intent' => tenant()->createSetupIntent()
         ]);
     }
@@ -29,20 +37,7 @@ class SubscriptionController extends Controller
             ->newSubscription('default', $request->plan)
             ->create($request->token);
 
-        return redirect()->route('subscriptions.premium');
-    }
-
-    public function premium()
-    {
-        return view('tenant.dashboard.subscriptions.premium');
-    }
-
-    public function account()
-    {
-        $tenant = tenant();
-        $invoices = $tenant->invoices();
-        $subscription = $tenant->subscription('default');
-        return view('tenant.dashboard.subscriptions.account', compact('tenant', 'invoices', 'subscription'));
+        return redirect()->route('subscriptions.index');
     }
 
     public function downloadInvoice($invoiceId)

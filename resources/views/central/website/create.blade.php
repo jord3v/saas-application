@@ -12,14 +12,20 @@
       <div class="page page-center">
          <div class="container-tight">
             <div class="text-center mb-1">
-               <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://preview.tabler.io/static/logo.svg" height="36" alt=""></a>
+               <a href="/" class="navbar-brand navbar-brand-autodark">
+                  <x-application-logo height="72"/>
+               </a>
             </div>
             <form action="{{ route('website.store') }}" method="post" id="form">
                @csrf
+               <input type="hidden" name="token" value="{{str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')}}">
+               @if(isset($user))
+                  <input type="hidden" name="google_id" value="{{$user->id}}" required>
+               @endif
                <div class="card card-md">
-                  <input type="hidden" name="token" value="{{str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')}}">
+                  
                   <div class="card-body text-center">
-                     <h1 class="mt-5">Crie sua conta</h1>
+                     <h1 class="mt-5">Crie sua conta @if(isset($user)) usando o Google @endif</h1>
                   </div>
                   <div class="hr-text hr-text-center hr-text-spaceless">Dados pessoais</div>
                   <div class="card-body">
@@ -33,31 +39,42 @@
                               <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
                            </svg>
                         </span>
-                        <input type="text" class="form-control" name="manager" placeholder="Nome completo" required>
+                        <input type="text" class="form-control" name="manager" placeholder="Nome completo" value="{{ $user->name ?? old('name') }}" required>
                      </div>
                      <div class="input-icon mb-2">
                         <span class="input-icon-addon">
                            <!-- Download SVG icon from http://tabler-icons.io/i/user -->
-                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                              <polyline points="3 7 12 13 21 7"></polyline>
-                           </svg>
+                           @if(!isset($user))
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                 <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                 <polyline points="3 7 12 13 21 7"></polyline>
+                              </svg>
+                           @else
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-google" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                 <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path>
+                              </svg>
+                           @endif
+                           
                         </span>
-                        <input type="email" class="form-control" name="email" placeholder="Endereço de e-mail" required>
+                        <input type="email" class="form-control" name="email" placeholder="Endereço de e-mail" value="{{ $user->email ?? old('email') }}" required @if(isset($user)) readonly="readonly" @endif>
                      </div>
+                     @if(!isset($user))
                      <div class="input-icon mb-2">
                         <span class="input-icon-addon">
-                           <!-- Download SVG icon from http://tabler-icons.io/i/user -->
-                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <rect x="5" y="11" width="14" height="10" rx="2"></rect>
-                              <circle cx="12" cy="16" r="1"></circle>
-                              <path d="M8 11v-4a4 4 0 0 1 8 0v4"></path>
-                           </svg>
-                        </span>
-                        <input type="password" class="form-control" name="password" placeholder="Crie uma senha segura" required>
-                     </div>
+                              <!-- Download SVG icon from http://tabler-icons.io/i/user -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                 <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                                 <circle cx="12" cy="16" r="1"></circle>
+                                 <path d="M8 11v-4a4 4 0 0 1 8 0v4"></path>
+                              </svg>
+                           </span>
+                           <input type="password" class="form-control" name="password" placeholder="Crie uma senha segura" required>
+                        </div>
+                     @endif
+                     
                   </div>
                   <div class="hr-text hr-text-center hr-text-spaceless">Dados da organização</div>
                   <div class="card-body">
@@ -94,13 +111,18 @@
                      </div>
                      <div class="form-footer">
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-primary w-100">
-                        Criar conta
+                           @if(!isset($user))
+                           Criar conta
+                           @else
+                           Concluir cadastro    
+                           @endif
                         </button>
                      </div>
                   </div>
+                  @if(!isset($user))
                   <div class="hr-text hr-text-center hr-text-spaceless">ou inscreva-se usando o</div>
                   <div class="card-body">
-                     <a href="#" class="btn">
+                     <a href="{{ route('google.redirect') }}" class="btn">
                         <!-- Download SVG icon from http://tabler-icons.io/i/brand-google -->
                         <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
                            <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
@@ -112,6 +134,7 @@
                         </svg>
                      </a>
                   </div>
+                  @endif
                </div>
             </form>
          </div>

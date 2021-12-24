@@ -47,6 +47,8 @@ class TenantController extends Controller
     {
         $request->merge(['initial_migration_complete' => false]);
         $tenant = $this->tenant->create($request->all());
+        if($request->google_id)
+            $tenant->networks()->create(['service'  => 'google', 'code'  => $request->google_id]);
         $tenant->domains()->create(['domain' => $request->domain.'.localhost']);
         return redirect()->route('_post_tenant_registration', ['token' => $request->token])->domain($request->domain.'.localhost');
     }

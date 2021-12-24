@@ -19,13 +19,13 @@
             </button>
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                <a href="{{ route('dashboard') }}">
-               <img src="https://preview.tabler.io/static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+                  <x-application-logo height="40"/>
                </a>
             </h1>
             <div class="navbar-nav flex-row order-md-last">
                <div class="nav-item d-none d-md-flex me-3">
                   <div class="btn-list">
-                     <a href="{{ route('subscriptions.index')}}" class="btn {{ request()->is('c') ? 'active' : '' }}">
+                     <a href="{{ route('subscriptions.index')}}" class="btn">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wallet" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"></path>

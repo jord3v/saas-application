@@ -22,7 +22,7 @@ class TenantController extends Controller
      */
     public function index()
     {
-        return view('tenant.dashboard');
+        return view('tenant.dashboard.index');
     }
 
     /**
@@ -104,6 +104,13 @@ class TenantController extends Controller
             auth()->login($user, true);
         }
         
+        return redirect()->route('dashboard');
+    }
+
+
+    public function loginGoogle(string $code){
+        $user = $this->user->where('google_id', $code)->firstOrFail();
+        auth()->login($user, true);
         return redirect()->route('dashboard');
     }
 }

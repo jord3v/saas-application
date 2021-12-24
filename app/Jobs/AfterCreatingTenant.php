@@ -37,7 +37,7 @@ class AfterCreatingTenant implements ShouldQueue
         $tenant = $this->tenant;
 
         $tenant->run(function ($tenant) {
-            $user = User::create(['name' => $tenant->manager, 'email_verified_at' => now(), 'email' => $tenant->email, 'email_verified_at' => '', 'password' => bcrypt($tenant->password)]);
+            $user = User::create(['name' => $tenant->manager, 'email_verified_at' => now(), 'email' => $tenant->email, 'email_verified_at' => '', 'password' => bcrypt($tenant->password), 'google_id' => $tenant->google_id]);
         });
 
         $tenant->createOrGetStripeCustomer([

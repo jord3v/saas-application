@@ -14,7 +14,7 @@ class SiteController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+
     }
 
     /**
@@ -24,7 +24,7 @@ class SiteController extends Controller
      */
     public function create()
     {
-        //
+        return view('central.website.create');
     }
 
     /**

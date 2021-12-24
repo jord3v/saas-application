@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Central\SiteController;
 use App\Http\Controllers\Central\TenantController;
+use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [SiteController::class, 'index'])->name('website.index');
-
-
+Route::get('/criar-conta', [SiteController::class, 'create'])->name('website.create');
 Route::post('/', [TenantController::class, 'store'])->name('website.store');
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');

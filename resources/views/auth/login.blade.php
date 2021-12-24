@@ -35,13 +35,13 @@
         <div class="hr-text">ou</div>
         <div class="card-body">
           <div class="row">
-            <div class="col"><a href="#" class="btn btn-white w-100">
+            <div class="col"><a href="{{ route('google.redirect') }}" class="btn btn-white w-100">
                 <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-google" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path>
                  </svg>
-                Login Google
+                Acessar com a conta Google
               </a>
             </div>
           </div>

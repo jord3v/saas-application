@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="title">
-       {{ __('Dashboard') }}
+       {{ __('Página inicial') }}
     </x-slot>
     <x-slot name="btns">
        <div class="btn-list">
