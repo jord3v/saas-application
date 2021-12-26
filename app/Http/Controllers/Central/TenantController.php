@@ -24,7 +24,7 @@ class TenantController extends Controller
      */
     public function index()
     {
-        //
+        return view('central.dashboard.index');
     }
 
     /**

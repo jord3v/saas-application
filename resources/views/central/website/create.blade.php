@@ -21,6 +21,7 @@
                <input type="hidden" name="token" value="{{str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')}}">
                @if(isset($user))
                   <input type="hidden" name="google_id" value="{{$user->id}}" required>
+                  <input type="hidden" name="avatar" value="{{$user->avatar}}">
                @endif
                <div class="card card-md">
                   

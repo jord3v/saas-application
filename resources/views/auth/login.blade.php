@@ -4,7 +4,7 @@
     <form class="card card-md" method="POST" action="{{ route('login') }}" autocomplete="off">
         @csrf
         <div class="card-body">
-          <h2 class="card-title text-center mb-4">Login to your account</h2>
+          <h2 class="card-title text-center mb-4">Faça login na sua conta</h2>
           <div class="mb-3">
             <x-label for="email" class="form-label" :value="__('Email')" />
             <x-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus />

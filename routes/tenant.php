@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfilleController;
+use App\Http\Controllers\Tenant\RoleController;
 use App\Http\Controllers\Tenant\SubscriptionController;
 use App\Http\Controllers\Tenant\TenantController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +51,9 @@ Route::middleware([
             Route::get('/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
             Route::get('/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
         });
+        Route::resource('/roles', RoleController::class);
+        Route::get('/profile/google/revoke', [ProfileController::class, 'revoke'])->name('google.revoke');
+        Route::get('/profile/google/link', [ProfileController::class, 'link'])->name('google.link');
     });
 });
 
@@ -57,5 +63,8 @@ Route::middleware([
     'universal',
     InitializeTenancyByDomain::class,
 ])->group(function () {
+    Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
+    Route::resource('/profile', ProfileController::class);
+    });
     require __DIR__.'/auth.php';
 });

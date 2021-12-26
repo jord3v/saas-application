@@ -16,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
+    Route::get('/', [TenantController::class, 'index'])->name('dashboard');
+});
+
 Route::get('/criar-conta', [SiteController::class, 'create'])->name('website.create');
-Route::post('/', [TenantController::class, 'store'])->name('website.store');
+Route::post('/criar-conta', [TenantController::class, 'store'])->name('website.store');
+
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+

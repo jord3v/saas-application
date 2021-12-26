@@ -1,3 +1,6 @@
+@php
+   $user = auth()->user();
+@endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
    <head>
@@ -23,33 +26,6 @@
                </a>
             </h1>
             <div class="navbar-nav flex-row order-md-last">
-               <div class="nav-item d-none d-md-flex me-3">
-                  <div class="btn-list">
-                     <a href="{{ route('subscriptions.index')}}" class="btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wallet" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"></path>
-                            <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"></path>
-                        </svg>
-                        Assinaturas
-                     </a>
-                  </div>
-               </div>
-               <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                     <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-                  </svg>
-               </a>
-               <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                     <circle cx="12" cy="12" r="4" />
-                     <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-                  </svg>
-               </a>
                <div class="nav-item dropdown d-none d-md-flex me-3">
                   <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
                      <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
@@ -70,13 +46,14 @@
                </div>
                <div class="nav-item dropdown">
                   <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                     <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                     <span class="avatar avatar-sm" style="background-image: url({{$user->getFirstMediaUrl('profile') ? $user->getFirstMediaUrl('profile') : 'https://www.sevor.com.br/wp-content/uploads/elementor/thumbs/LOGO-SEVOR-ooprl9vkige2les3iup6j2dhfrnspoknxh6d0gx6o0.png'}})"></span>
                      <div class="d-none d-xl-block ps-2">
-                        <div>{{ Auth::user()->name }}</div>
+                        <div>{{ $user->name }}</div>
+                        <div class="mt-1 small text-muted">{{ $user->roles->first()->name }}</div>
                      </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                     <a href="#" class="dropdown-item">Meu perfil</a>
+                     <a href="{{ route('profile.index')}}" class="dropdown-item">Meu perfil</a>
                      <div class="dropdown-divider"></div>
                      <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}

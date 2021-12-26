@@ -38,6 +38,9 @@ class AfterCreatingTenant implements ShouldQueue
 
         $tenant->run(function ($tenant) {
             $user = User::create(['name' => $tenant->manager, 'email_verified_at' => now(), 'email' => $tenant->email, 'email_verified_at' => '', 'password' => bcrypt($tenant->password), 'google_id' => $tenant->google_id]);
+            $user->assignRole('Administrador');
+            if($user->google_id)
+                $user->addMediaFromUrl($tenant->avatar)->toMediaCollection('profile');
         });
 
         $tenant->createOrGetStripeCustomer([
