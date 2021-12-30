@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
 {
@@ -25,46 +27,73 @@ class SubscriptionController extends Controller
 
     public function checkout()
     {
+        $plans = $this->retrievePlans();
+        $tenant = tenant();
+        if($tenant->paymentMethods('boleto')){
+            $method = collect($tenant->paymentMethods('boleto'))->first();//->billing_details->address;
+        }
         return view('tenant.dashboard.subscriptions.checkout', [
-            'intent' => tenant()->createSetupIntent()
+            'intent'    => tenant()->createSetupIntent(), 
+            'plans'     => $plans,
+            'tenant'    => $tenant,
+            'method'    => $method
         ]);
+    }
+
+
+    public function boleto($pi)
+    {
+        $boleto = Cashier::stripe()->paymentIntents->retrieve($pi,[]);
+        return view('tenant.dashboard.subscriptions.boleto', compact('boleto'));
     }
 
 
     public function store(Request $request)
     {
-        tenant()
-            ->newSubscription('default', $request->plan)
-            ->create($request->token);
+        if($request->method_payment == "?payment=boleto"){
+            try {
+                $tenant = tenant();
+                $paymentMethod = $tenant->paymentMethods('boleto')->first();
+                $subscription = $tenant->newSubscription('default', $request->plan)
+                                        ->create($paymentMethod->id);
+            } catch (IncompletePayment $exception) {
+                return redirect()->route('subscriptions.boleto', $exception->payment->id);
+            }
+        }
+        elseif ($request->method_payment == "?payment=cartao") {
+            tenant()->newSubscription('default', $request->plan)->create($request->token);
+        } else {
 
-        return redirect()->route('subscriptions.index');
+        }
+        return redirect()->route('subscriptions.index')->with('toast_success', 'Pagamento realizado com sucesso!');
     }
 
-    public function downloadInvoice($invoiceId)
-    {
-        return tenant()->downloadInvoice($invoiceId, [
-            'vendor' => config('app.name'),
-            'product' => 'Your Product',
-            'street' => 'Rua Alfredo Ometecídio, 210',
-            'location' => 'São Paulo - SP',
-            'phone' => '(11) 9 8108-7234',
-            'email' => 'jorgemiguelto@gmail.com',
-            'url' => 'https://example.com',
-            'vendorVat' => 'BE123456789',
-        ]);
-    }
 
     public function cancel()
     {
         tenant()->subscription('default')->cancel();
-        return redirect()->route('subscriptions.index');
+        return redirect()->route('subscriptions.index')->with('toast_success', 'Assinatura cancelada com sucesso!');
     }
 
 
     public function resume()
     {
         tenant()->subscription('default')->resume();
-        return redirect()->route('subscriptions.index');
+        return redirect()->route('subscriptions.index')->with('toast_success', 'Assinatura reativada com sucesso!');
     }
 
+
+
+    public function retrievePlans() {
+        $plansraw = Cashier::stripe()->prices->all();
+        $plans = $plansraw->data;
+        
+        foreach($plans as $plan) {
+            $prod = Cashier::stripe()->products->retrieve(
+                $plan->product,[]
+            );
+            $plan->product = $prod;
+        }
+        return $plans;
+    }
 }

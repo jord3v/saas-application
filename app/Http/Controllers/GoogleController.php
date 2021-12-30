@@ -80,6 +80,6 @@ class GoogleController extends Controller
             $user = $this->user->find(session('user'));
             $user->update(['email' => session('email'), 'google_id' => session('token')]);
         });
-        return redirect(tenant_route($tenant->domains->first()->domain, 'profile.index'));
+        return redirect(tenant_route($tenant->domains->first()->domain, 'profile.index'))->with('toast_success', 'Conta Google desvinculada com sucesso!');
     }
 }

@@ -107,11 +107,11 @@ class ProfileController extends Controller
             $network->delete();
         });
         auth()->user()->update(['google_id' => null]);
-        return redirect()->back()->with('success', 'A conta do Google foi desvinculada com sucesso!'); 
+        return redirect()->back()->with('toast_success', 'Conta Google desvinculada com sucesso!');
     }
 
     public function link()
     {
-        return redirect()->route('google.redirect', ['tenant' => tenant()->id, 'user' => auth()->user()->id]);
+        return redirect()->route('google.redirect', ['tenant' => tenant()->id, 'user' => auth()->user()->id])->with('toast_success', 'Conta Google vinculada com sucesso!');
     }
 }

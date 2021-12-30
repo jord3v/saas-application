@@ -48,7 +48,6 @@ class AfterCreatingTenant implements ShouldQueue
             'email' => $tenant->email,
             "preferred_locales" => ['pt-BR'],
         ]);
-
         $tenant->update(['initial_migration_complete' => true]);
     }
 }

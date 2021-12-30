@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Cashier;
 
 class TenantController extends Controller
 {
@@ -15,6 +16,18 @@ class TenantController extends Controller
     {
         $this->user = $user;
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        return view('tenant.dashboard.index');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +35,11 @@ class TenantController extends Controller
      */
     public function index()
     {
-        return view('tenant.dashboard.index');
+        $tenant = tenant();
+        if($tenant->paymentMethods('boleto')){
+            $method = collect($tenant->paymentMethods('boleto'))->first();//->billing_details->address;
+        }
+        return view('tenant.dashboard.settings.index', compact('tenant', 'method'));
     }
 
     /**
@@ -112,5 +129,59 @@ class TenantController extends Controller
         $user = $this->user->where('google_id', $code)->firstOrFail();
         auth()->login($user, true);
         return redirect()->route('dashboard');
+    }
+
+
+    public function updateTenant(Request $request)
+    {
+        $tenant = tenant();
+        $tenant->update($request->all());
+        
+        $customer = $tenant->updateStripeCustomer([
+            'name'        => $request->name,
+            'email'       => $request->email,
+            'preferred_locales' => ['pt-BR'],
+        ]);
+
+        return redirect()->back()->with('toast_success', 'Organização atualizada com sucesso!');
+    }
+
+
+    public function billingAddress(Request $request, $id = null)
+    {
+        $tenant = tenant();
+        if(!$id){
+            $this->createMethodPaymentoBoleto($request->all());
+        }else{
+            $test = $tenant->findPaymentMethod($id);
+            $test->delete();
+            $this->createMethodPaymentoBoleto($request->all());
+        }
+        return redirect()->back()->with('toast_success', 'Dados para faturamento atualizado com sucesso!');
+    }
+
+
+    public function createMethodPaymentoBoleto($request){
+        $tenant = tenant();
+        $paymentMethod = Cashier::stripe()->paymentMethods->create([
+            'type' => 'boleto',
+            'boleto' => [
+                'tax_id' => $request['tax_id'],
+            ],
+            "billing_details"=> [
+                "address"=> [
+                    "city"           => $request['city'],
+                    "country"=> 'BR',
+                    "line1"          => $request['line1'],
+                    "postal_code"    => $request['zipcode'],
+                    "state"          => $request['state'],
+                ],
+                'name'        => $request['name'],
+                'email'       => $request['email'],
+            ],
+        ]);
+
+        $tenant->addPaymentMethod($paymentMethod); // adiciona método de pagamento ao tenant
+        $tenant->updateDefaultPaymentMethod($paymentMethod); // deixe o endereço padrão
     }
 }

@@ -37,4 +37,9 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
        return $this->hasMany(Network::class);
     }
+
+    public function setTaxIdAttribute($value)
+    {
+        $this->attributes['tax_id'] = preg_replace("/[^0-9]/", "", $value);
+    }
 }

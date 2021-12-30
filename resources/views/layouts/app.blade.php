@@ -14,6 +14,7 @@
       <script src="https://js.stripe.com/v3/"></script>
    </head>
    <body>
+   @include('sweetalert::alert', ['cdn' => "//cdn.jsdelivr.net/npm/sweetalert2@9"])
    <div class="wrapper">
       <header class="navbar navbar-expand-md navbar-light d-print-none">
          <div class="container-xl">

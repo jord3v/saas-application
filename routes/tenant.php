@@ -41,17 +41,20 @@ Route::middleware([
     
     Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
         Route::group(['middleware' => ['subscribed']], function(){
-            Route::get('/', [TenantController::class, 'index'])->name('dashboard');
+            Route::get('/', [TenantController::class, 'dashboard'])->name('dashboard');
         });
         Route::group(['prefix' => 'subscriptions'], function(){
             Route::get('/', [SubscriptionController::class, 'index'])->name('subscriptions.index');
             Route::get('/checkout', [SubscriptionController::class, 'checkout'])->name('subscriptions.checkout');
             Route::post('/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
-            Route::get('/invoice/{invoice}', [SubscriptionController::class, 'downloadInvoice'])->name('subscriptions.invoice.download');
             Route::get('/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
             Route::get('/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
+            Route::get('/boleto/{pi}', [SubscriptionController::class, 'boleto'])->name('subscriptions.boleto');
         });
         Route::resource('/roles', RoleController::class);
+        Route::resource('/settings', TenantController::class);
+        Route::put('/settings', [TenantController::class, 'updateTenant'])->name('settings.updateTenant');
+        Route::post('/settings/billing-address/{id?}', [TenantController::class, 'billingAddress'])->name('settings.billingAddress');
         Route::get('/profile/google/revoke', [ProfileController::class, 'revoke'])->name('google.revoke');
         Route::get('/profile/google/link', [ProfileController::class, 'link'])->name('google.link');
     });
