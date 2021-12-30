@@ -7,10 +7,10 @@
       <!-- Required meta tags -->
       <meta charset="utf-8">
       <meta name="csrf-token" content="{{ csrf_token() }}">
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+      <meta http-equiv="X-UA-Compatible" content="ie=edge"/>  
       <title>{{ config('app.name', 'Laravel') }}</title>
-      <!-- Stripe JS -->
+      <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
       <script src="https://js.stripe.com/v3/"></script>
    </head>
    <body>
