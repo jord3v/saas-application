@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function(){
+    return abort(503);
+});
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
     Route::get('/', [TenantController::class, 'index'])->name('dashboard');
