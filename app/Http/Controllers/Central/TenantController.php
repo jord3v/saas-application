@@ -50,7 +50,7 @@ class TenantController extends Controller
         if($request->google_id)
             $tenant->networks()->create(['service'  => 'google', 'code'  => $request->google_id]);
         $tenant->domains()->create(['domain' => $request->domain.'.'.env('APP_DOMAIN')]);
-        return redirect()->route('_post_tenant_registration', ['token' => $request->token])->domain($request->domain.'.localhost');
+        return redirect()->route('_post_tenant_registration', ['token' => $request->token])->domain($request->domain.'.'.env('APP_DOMAIN'));
     }
 
     /**
