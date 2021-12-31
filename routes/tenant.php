@@ -49,7 +49,6 @@ Route::middleware([
             Route::post('/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
             Route::get('/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
             Route::get('/resume', [SubscriptionController::class, 'resume'])->name('subscriptions.resume');
-            Route::get('/boleto/{pi}', [SubscriptionController::class, 'boleto'])->name('subscriptions.boleto');
         });
         Route::resource('/roles', RoleController::class);
         Route::resource('/settings', TenantController::class);

@@ -8,25 +8,31 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
 {
+    private $cashier;
     /**
      * Class constructor.
      */
-    public function __construct()
+    public function __construct(Cashier $cashier)
     {
+        $this->cashier = $cashier;
         $this->middleware(['auth']);
     }
 
     public function index()
     {
+        //
         $tenant = tenant();
-        $invoices = $tenant->invoices();
+        $billings = $this->cashier->stripe()->paymentIntents->all(['customer' => $tenant->stripe_id]);
         $subscription = $tenant->subscription('default');
-        return view('tenant.dashboard.subscriptions.index', compact('tenant', 'invoices', 'subscription'));
+        return view('tenant.dashboard.subscriptions.index', compact('tenant', 'billings', 'subscription'));
     }
 
 
     public function checkout()
     {
+        if (tenant()->subscriptions->where('stripe_status', 'active')->count() > 0)
+            return redirect()->route('subscriptions.index')->with('toast_warning', 'Você já possui plano ativo!');
+
         $plans = $this->retrievePlans();
         $tenant = tenant();
         if($tenant->paymentMethods('boleto')){
@@ -40,16 +46,10 @@ class SubscriptionController extends Controller
         ]);
     }
 
-
-    public function boleto($pi)
-    {
-        $boleto = Cashier::stripe()->paymentIntents->retrieve($pi,[]);
-        return view('tenant.dashboard.subscriptions.boleto', compact('boleto'));
-    }
-
-
     public function store(Request $request)
     {
+        if (tenant()->subscriptions->where('stripe_status', 'active')->count() > 0)
+            return redirect()->route('subscriptions.index')->with('toast_warning', 'Você já possui plano ativo!');
         if($request->method_payment == "?payment=boleto"){
             try {
                 $tenant = tenant();
@@ -57,7 +57,7 @@ class SubscriptionController extends Controller
                 $subscription = $tenant->newSubscription('default', $request->plan)
                                         ->create($paymentMethod->id);
             } catch (IncompletePayment $exception) {
-                return redirect()->route('subscriptions.boleto', $exception->payment->id);
+                return redirect()->route('subscriptions.index')->with('toast_success', 'Boleto gerado com sucesso!');
             }
         }
         elseif ($request->method_payment == "?payment=cartao") {
@@ -85,11 +85,11 @@ class SubscriptionController extends Controller
 
 
     public function retrievePlans() {
-        $plansraw = Cashier::stripe()->prices->all();
+        $plansraw = $this->cashier->stripe()->prices->all();
         $plans = $plansraw->data;
         
         foreach($plans as $plan) {
-            $prod = Cashier::stripe()->products->retrieve(
+            $prod = $this->cashier->stripe()->products->retrieve(
                 $plan->product,[]
             );
             $plan->product = $prod;

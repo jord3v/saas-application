@@ -9,12 +9,14 @@ use Laravel\Cashier\Cashier;
 class TenantController extends Controller
 {
     private $user;
+    private $cashier;
     /**
      * Class constructor.
      */
-    public function __construct(User $user)
+    public function __construct(User $user, Cashier $cashier)
     {
         $this->user = $user;
+        $this->cashier = $cashier;
     }
 
     /**
@@ -163,7 +165,7 @@ class TenantController extends Controller
 
     public function createMethodPaymentoBoleto($request){
         $tenant = tenant();
-        $paymentMethod = Cashier::stripe()->paymentMethods->create([
+        $paymentMethod = $this->cashier->stripe()->paymentMethods->create([
             'type' => 'boleto',
             'boleto' => [
                 'tax_id' => $request['tax_id'],
