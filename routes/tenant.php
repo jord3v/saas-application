@@ -30,12 +30,8 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', function () {
-        $prices = Cashier::stripe()->prices->all();
-        foreach ($prices as $key => $value) {
-            echo $value;
-        }
+        return redirect()->route('dashboard');
     });
-
     Route::get('/_post_tenant_registration/{token}', [TenantController::class, 'postTenantRegistration'])->name('_post_tenant_registration');
     Route::get('/auth/google/callback/{code}', [TenantController::class, 'loginGoogle'])->name('login.google');
     

@@ -6,9 +6,10 @@ header('Location: '.route('dashboard'));
 exit();
 }
 @endphp
+@section('title', trans('system.checkout'))
 <x-app-layout>
    <x-slot name="title">
-      {{ __('Assinar') }}
+      {{ trans('system.checkout') }}
    </x-slot>
    <x-slot name="btns">
       <div class="btn-list">
@@ -20,7 +21,7 @@ exit();
                   <line x1="5" y1="12" x2="11" y2="18"></line>
                   <line x1="5" y1="12" x2="11" y2="6"></line>
                </svg>
-               Voltar
+               {{ trans('system.back') }}
             </a>
          </span>
       </div>
@@ -30,40 +31,70 @@ exit();
          <div class="col-12">
             <div class="card">
                <div class="card-header">
-                  <h3 class="card-title">Selecione a forma de pagamento e o plano</h3>
+                  <h3 class="card-title">{{ trans('system.select_payment_method') }}</h3>
                </div>
                <div class="card-body">
                   <form action="{{ route('subscriptions.store') }}" method="post" class="form" id="form">
                      @csrf
                      <div class="form-group mb-3">
-                        <label class="form-label">Forma de pagamento</label>
+                        <label class="form-label">{{ trans('system.payment_method') }}</label>
                         <div>
                            <select class="form-select" name="method_payment" required onchange="window.location = this.options[this.selectedIndex].value">
-                              <option value="">Selecione a forma de pagamento</option>
-                              <option value="?payment=boleto" {{$_GET['payment'] == 'boleto' ? 'selected':''}}>Boleto bancário</option>
-                              <option value="?payment=cartao" {{$_GET['payment'] == 'cartao' ? 'selected':''}}>Cartão de crédito</option>
+                              <option value="">{{ trans('system.payment_method') }}</option>
+                              <option value="?payment=boleto" {{$_GET['payment'] == 'boleto' ? 'selected':''}}>{{ trans('system.billet') }}</option>
+                              <option value="?payment=cartao" {{$_GET['payment'] == 'cartao' ? 'selected':''}}>{{ trans('system.credit_card') }}</option>
                               <option value="?payment=pix" {{$_GET['payment'] == 'pix' ? 'selected':''}}>Pix</option>
                            </select>
                         </div>
                      </div>
                      <div class="mb-3">
-                        <label class="form-label">Plano</label>
+                        <label class="form-label">{{ trans('system.plan') }}</label>
                         <div class="row">
                            @forelse ($plans as $plan)
-                           <div class="col-sm-6 col-lg-3">
+                           <div class="col-sm-6 col-lg-4">
                               <div class="card card-md">
                                  <div class="card-body text-center">
                                     <div class="text-uppercase text-muted font-weight-medium">{{$plan->product->name}}</div>
-                                    <div class="display-6 my-3">R$ {{$plan->unit_amount/100}}</div>
+                                    <div class="display-6 my-3">R$ {{$plan->unit_amount/100}} <span style="font-size: 1.5rem;">/{{ trans('system.'.$plan->recurring->interval) }}</span> </div>
                                     <ul class="list-unstyled lh-lg">
                                        @forelse (collect($plan->product->metadata) as $key => $value)
+                                       @if($value == 'true' && $key == 'recommended')
+                                       <div class="ribbon ribbon-bookmark bg-green">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                          </svg>
+                                       </div>
+                                       @elseif ($value == 'true')
+                                       <li>
+                                          <strong class="text-success">
+                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M5 12l5 5l10 -10"></path>
+                                             </svg>
+                                          </strong>
+                                          {{$key}}
+                                       </li>
+                                       @elseif ($value == 'false')
+                                       <li>
+                                          <strong class="text-danger">
+                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                             </svg>
+                                          </strong>
+                                          {{$key}}
+                                       </li>
+                                       @else
                                        <li><strong>{{$value}}</strong> {{$key}}</li>
+                                       @endif
                                        @empty
                                        @endforelse
                                     </ul>
                                     <div class="text-center mt-4">
                                        <label class="btn w-100">
-                                       <input type="radio" name="plan" value="{{$plan->id}}"> <span class="px-2">Escolher plano</span>
+                                       <input type="radio" name="plan" value="{{$plan->id}}" required> <span class="px-2">{{ trans('system.choose_plan') }}</span>
                                        </label>
                                     </div>
                                  </div>
@@ -71,7 +102,7 @@ exit();
                            </div>
                            @empty
                            <div class="col">
-                              nada encontrado 
+                              {{ trans('system.nothing_found') }}
                            </div>
                            @endforelse
                         </div>
@@ -80,69 +111,29 @@ exit();
                         @if($_GET['payment'] == 'cartao')
                         <div class="cartao">
                            <div class="form-group mb-3">
-                              <label class="form-label">Nome completo</label>
+                              <label class="form-label">{{__('Name')}}</label>
                               <div>
                                  <input type="text" class="form-control" id="card-holder-name" value="{{auth()->user()->name}}">
-                                 <small class="form-hint">Não armazenamos dados relacionado a cartão de crédito em nosso banco de dados.</small>
+                                 <small class="form-hint">{{ trans('system.helper_credit_card') }}</small>
                               </div>
                            </div>
                            <div class="form-group mb-3 ">
                               <div>
-                                 <label class="form-label">Cartão de crédito</label>
+                                 <label class="form-label">{{ trans('system.credit_card') }}</label>
                                  <div id="card-element"></div>
                               </div>
                            </div>
                         </div>
                         @endif
-                        @if($_GET['payment'] == 'boleto')
-                        <div class="boleto">
-                           <div class="col-md-6 col-xl-12">
-                              <div class="mb-3">
-                                 <div class="row mb-3">
-                                    <div class="col-12 col-md-6">                                  
-                                       <label class="form-label">Responsável</label>
-                                       <input type="text" class="form-control" value="{{$method->billing_details->name ?? ''}}" readonly>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                       <label class="form-label">Endereço de e-mail</label>
-                                       <input type="text" class="form-control" value="{{$method->billing_details->email ?? ''}}" readonly>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                       <label class="form-label">CPF ou CNPJ</label>
-                                       <input type="text" class="form-control" value="{{$method->boleto->tax_id ?? ''}}" readonly>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="mb-3">
-                                 <div class="row mb-3">
-                                    <div class="col-12 col-md-2">                                  
-                                       <label class="form-label">CEP</label>
-                                       <input type="text" class="form-control" data-mask="00000-000" data-mask-visible="true" autocomplete="off" onblur="pesquisacep(this.value);" value="{{$method->billing_details->address->postal_code ?? ''}}" readonly>
-                                    </div>
-                                    <div class="col-6 col-md-5">
-                                       <label class="form-label">Logradouro</label>
-                                       <input type="text" class="form-control" value="{{$method->billing_details->address->line1 ?? ''}}" readonly>
-                                    </div>
-                                    <div class="col-6 col-md-4">
-                                       <label class="form-label">Cidade</label>
-                                       <input type="text" class="form-control" value="{{$method->billing_details->address->city ?? ''}}" readonly>
-                                    </div>
-                                    <div class="col-6 col-md-1">
-                                       <label class="form-label">Estado</label>
-                                       <input type="text" class="form-control" value="{{$method->billing_details->address->state ?? ''}}" readonly>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
+                        @if($_GET['payment'] == 'pix')
+                        <div class="pix">
+                           PIX
                         </div>
                         @endif
-                        <div class="pix" style="display: none;">
-                           pix
-                        </div>
                      </div>
                      <div class="form-footer">
                         <strong id="show-errors" style="display: none;" class="text-danger py-2"></strong>
-                        <button type="submit" class="btn btn-primary" id="card-button" data-secret="{{ $intent->client_secret }}">Enviar</button>
+                        <button type="submit" class="btn btn-primary" id="card-button" data-secret="{{ $intent->client_secret }}">{{ trans('system.submit') }}</button>
                      </div>
                   </form>
                </div>
@@ -155,21 +146,6 @@ exit();
    function selectCurSort() {
       var match = window.location.href.split('?')[1];
       $('#sort').find('option[value$="'+match+'"]').attr('selected',true);
-   }
-   selectCurSort();
-   
-   
-   function val() {
-      document.querySelector('.cartao').style.display = 'none';
-      document.querySelector('.boleto').style.display = 'none';
-      document.querySelector('.pix').style.display = 'none';
-      mp = document.getElementById("method_payment").value;
-      document.querySelector('.'+mp+'').style.display = '';           // Hide
-      if(mp != 'cartao'){
-          document.querySelector(".form").removeAttribute("id")
-          document.querySelector('.cartao').remove()
-          document.querySelector('#card-button').removeAttribute('id')
-      }
    }
 </script>
 <script>
@@ -191,7 +167,7 @@ exit();
        e.preventDefault()
        // Disable button
         cardButton.classList.add('disabled')
-        cardButton.firstChild.data = 'Validando...'
+        cardButton.firstChild.data = '{{trans('system.validating')}}'
         
         // reset errors
         showErrors.innerText = ''
@@ -210,9 +186,9 @@ exit();
        
        if(error) {
            showErrors.style.display = 'block'
-           showErrors.innerText = (error.type == 'validation_error') ? error.message : 'Dados inválidos, verifique e tente novamente!'
+           showErrors.innerText = (error.type == 'validation_error') ? error.message : '{{trans('system.invalid_data')}}'
            cardButton.classList.remove('disabled')
-           cardButton.firstChild.data = 'Enviar'
+           cardButton.firstChild.data = '{{ trans('system.submit') }}'
            return;
        }
    

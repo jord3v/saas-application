@@ -1,12 +1,14 @@
+@section('title', 'Página inicial')
 <x-app-layout>
     <x-slot name="title">
-       {{ __('Página inicial') }}
+      {{ trans('system.dashboard') }}
     </x-slot>
     <x-slot name="btns">
        <div class="btn-list">
           
        </div>
     </x-slot>
+    
     <div class="container-xl d-flex flex-column justify-content-center">
        <div class="empty">
           <p class="empty-title">Seja bem vindo</p>

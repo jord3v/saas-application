@@ -1,6 +1,7 @@
+@section('title', trans('system.profile'))
 <x-app-layout>
    <x-slot name="title">
-      {{ __('Meu perfil') }}
+      {{ trans('system.profile') }}
    </x-slot>
    <x-slot name="btns">
       <div class="btn-list">
@@ -11,7 +12,7 @@
                <line x1="5" y1="12" x2="11" y2="18"></line>
                <line x1="5" y1="12" x2="11" y2="6"></line>
             </svg>
-            Voltar
+            {{ trans('system.back') }}
          </a>
       </div>
    </x-slot>
@@ -20,7 +21,7 @@
          <div class="col-12">
             <div class="card mb-3">
                <div class="card-header">
-                  <h3 class="card-title">Dados pessoais</h3>
+                  <h3 class="card-title">{{ trans('system.personal_data') }}</h3>
                </div>
                <div class="card-body">
                   <div class="row">
@@ -28,25 +29,25 @@
                         <div class="mb-3">
                            <div class="row g-2">
                               <div class="col-12 col-md-4">
-                                 <label class="form-label">Nome completo</label>
+                                 <label class="form-label">{{__('Name')}}</label>
                                  <input type="text" class="form-control" name="name" value="{{$user->name}}" required>
                               </div>
-                              <div class="col-6 col-md-3">
-                                 <label class="form-label">Endereço de e-mail</label>
+                              <div class="col-12 col-md-3">
+                                 <label class="form-label">{{__('Email')}}</label>
                                  <input type="text" class="form-control" name="email" value="{{$user->email}}" required>
                               </div>
-                              <div class="col-6 col-md-2">
-                                 <label class="form-label">Senha</label>
+                              <div class="col-5 col-md-2">
+                                 <label class="form-label">{{__('Password')}}</label>
                                  <input type="password" class="form-control" name="password" value="">
                               </div>
-                              <div class="col-6 col-md-2">
-                                 <label class="form-label">Confirme a senha</label>
+                              <div class="col-5 col-md-2">
+                                 <label class="form-label">{{__('Confirm Password')}}</label>
                                  <input type="password" class="form-control" name="confirm-password" value="">
                               </div>
-                              <div class="col-6 col-md-1">
+                              <div class="col-2 col-md-1">
                                  <label class="form-label">Google <span class="form-help" data-bs-toggle="popover" data-bs-placement="top"
-                                    data-bs-content="<p>{{$user->google_id ? 'Conta Google para login vinculada': 'Conta Google para login não vinculada'}}</p>
-                                    <p class='mb-0'>@if($user->google_id) <a href='{{route('google.revoke')}}'>Desvincular Conta Google</a> @else  <a href='{{route('google.link')}}'>Vincular Conta Google</a> @endif</p>
+                                    data-bs-content="<p>{{$user->google_id ? trans('system.google.link_success') : trans('system.google.revoke_success')}}</p>
+                                    <p class='mb-0'>@if($user->google_id) <a href='{{route('google.revoke')}}'>{{trans('system.google.revoke')}}</a> @else  <a href='{{route('google.link')}}'>{{trans('system.google.link')}}</a> @endif</p>
                                     "
                                     data-bs-html="true">?</span></label>
                                  <a href="javascript:void(0)" class="btn {{!$user->google_id ? 'disabled': ''}}">

@@ -1,6 +1,7 @@
+@section('title', trans('system.settings'))
 <x-app-layout>
    <x-slot name="title">
-      {{ __('Meu perfil') }}
+      {{ trans('system.settings') }}
    </x-slot>
    <x-slot name="btns">
       <div class="btn-list">
@@ -11,7 +12,7 @@
                <line x1="5" y1="12" x2="11" y2="18"></line>
                <line x1="5" y1="12" x2="11" y2="6"></line>
             </svg>
-            Voltar
+            {{ trans('system.back') }}
          </a>
       </div>
    </x-slot>
@@ -23,7 +24,7 @@
                @method('PUT')
                <div class="card mb-3">
                   <div class="card-header">
-                     <h3 class="card-title">Dados da organização</h3>
+                     <h3 class="card-title">{{ trans('system.tenant.organization_data') }}</h3>
                   </div>
                   <div class="card-body">
                      <div class="row">
@@ -31,16 +32,12 @@
                            <div class="mb-3">
                               <div class="row g-2">
                                  <div class="col-12 col-md-6">
-                                    <label class="form-label">Nome da organização</label>
+                                    <label class="form-label">{{ trans('system.tenant.name') }}</label>
                                     <input type="text" class="form-control" name="name" value="{{$tenant->name}}" required>
                                  </div>
                                  <div class="col-6 col-md-3">
-                                    <label class="form-label">Endereço de e-mail</label>
+                                    <label class="form-label">{{ __('Email') }}</label>
                                     <input type="text" class="form-control" name="email" value="{{$tenant->email}}" required>
-                                 </div>
-                                 <div class="col-6 col-md-3">
-                                    <label class="form-label">CNPJ</label>
-                                    <input type="text" name="cnpj" class="form-control" data-mask="00.000.000/0000-00" data-mask-visible="true" autocomplete="off" value="{{$tenant->cnpj}}">
                                  </div>
                               </div>
                            </div>
@@ -49,7 +46,7 @@
                   </div>
                   <div class="card-footer text-end">
                      <div class="d-flex">
-                        <button type="submit" class="btn btn-primary ms-auto">Atualizar</button>
+                        <button type="submit" class="btn btn-primary ms-auto">{{ trans('system.save') }}</button>
                      </div>
                   </div>
                </div>
@@ -58,7 +55,7 @@
                @csrf
                <div class="card mb-3">
                   <div class="card-header">
-                     <h3 class="card-title">Dados para faturamento</h3>
+                     <h3 class="card-title"> {{ trans('system.billing_data') }}</h3>
                   </div>
                   <div class="card-body">
                      <div class="row">
@@ -66,35 +63,36 @@
                            <div class="mb-3">
                               <div class="row mb-3">
                                  <div class="col-12 col-md-6">                                  
-                                    <label class="form-label">Responsável</label>
+                                    <label class="form-label">{{ trans('system.tenant.owner') }}</label>
                                     <input type="text" name="name" class="form-control" value="{{$method->billing_details->name ?? ''}}" required>
                                  </div>
-                                 <div class="col-6 col-md-3">
-                                    <label class="form-label">Endereço de e-mail</label>
+                                 <div class="col-12 col-md-3">
+                                    <label class="form-label">{{ __('Email') }}</label>
                                     <input type="text" class="form-control" name="email" value="{{$method->billing_details->email ?? ''}}" required>
                                  </div>
-                                 <div class="col-6 col-md-3">
-                                    <label class="form-label">CPF ou CNPJ</label>
-                                    <input type="text" class="form-control" name="tax_id" value="{{$method->boleto->tax_id ?? ''}}" required>
+                                 <div class="col-12 col-md-3">
+                                    <label class="form-label" id="tax_id">{{ trans('system.tenant.tax') }}</label>
+                                    <input type='text' class="form-control" name='tax_id' value="{{$method->boleto->tax_id ?? ''}}" minlength="11" maxlength="14" required>
+                                    <small class="text-help">{{ trans('system.tenant.tax_helper') }}</small>
                                  </div>
                               </div>
                            </div>
                            <div class="mb-3">
                               <div class="row mb-3">
                                  <div class="col-12 col-md-2">                                  
-                                    <label class="form-label">CEP</label>
+                                    <label class="form-label">{{ trans('system.zipcode') }}</label>
                                     <input type="text" name="zipcode" class="form-control" data-mask="00000-000" data-mask-visible="true" autocomplete="off" onblur="pesquisacep(this.value);" value="{{$method->billing_details->address->postal_code ?? ''}}" required>
                                  </div>
-                                 <div class="col-6 col-md-5">
-                                    <label class="form-label">Logradouro</label>
+                                 <div class="col-12 col-md-5">
+                                    <label class="form-label">{{ trans('system.address') }}</label>
                                     <input type="text" class="form-control" name="line1" value="{{$method->billing_details->address->line1 ?? ''}}" required>
                                  </div>
-                                 <div class="col-6 col-md-4">
-                                    <label class="form-label">Cidade</label>
+                                 <div class="col-8 col-md-4">
+                                    <label class="form-label">{{ trans('system.city') }}</label>
                                     <input type="text" class="form-control" name="city" value="{{$method->billing_details->address->city ?? ''}}" required>
                                  </div>
-                                 <div class="col-6 col-md-1">
-                                    <label class="form-label">Estado</label>
+                                 <div class="col-4 col-md-1">
+                                    <label class="form-label">{{ trans('system.state') }}</label>
                                     <input type="text" class="form-control" name="state" value="{{$method->billing_details->address->state ?? ''}}" required>
                                  </div>
                               </div>
@@ -104,7 +102,7 @@
                   </div>
                   <div class="card-footer text-end">
                      <div class="d-flex">
-                        <button type="submit" class="btn btn-primary ms-auto">Atualizar</button>
+                        <button type="submit" class="btn btn-primary ms-auto">{{ trans('system.save') }}</button>
                      </div>
                   </div>
                </div>
@@ -113,6 +111,7 @@
       </div>
    </div>
    <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+   
    <script>
       const Toast = Swal.mixin({toast: true,
           position: 'top-end',
@@ -127,7 +126,6 @@
       function limpa_formulário_cep() {
               //Limpa valores do formulário de cep.
               document.getElementsByName('line1')[0].value=("");
-              document.getElementsByName('neighborhood')[0].value=("");
               document.getElementsByName('city')[0].value=("");
               document.getElementsByName('state')[0].value=("");
       }
@@ -139,12 +137,12 @@
               document.getElementsByName('line1')[0].value=(conteudo.logradouro +' - '+ conteudo.bairro);
               document.getElementsByName('city')[0].value=(conteudo.localidade);
               document.getElementsByName('state')[0].value=(conteudo.uf);
-              Toast.fire({ icon: 'success', title: 'Endereço localizado com sucesso.'})
+              Toast.fire({ icon: 'success', title: '{{trans('system.zip_code_found')}}'})
           } //end if.
           else {
               //CEP não Encontrado.
               limpa_formulário_cep();
-              Toast.fire({ icon: 'error', title: 'O CEP informado não foi encontrado.'})
+              Toast.fire({ icon: 'error', title: '{{trans('system.notfound_zipcode')}}'})
           }
       }
           
@@ -164,7 +162,6 @@
       
                   //Preenche os campos com "..." enquanto consulta webservice.
                   document.getElementsByName("line1").value="...";
-                  document.getElementsByName('neighborhood').value="...";
                   document.getElementsByName('city').value="...";
                   document.getElementsByName('state').value="...";
       
@@ -181,7 +178,7 @@
               else {
                   //cep é inválido.
                   limpa_formulário_cep();
-                  Toast.fire({ icon: 'error', title: 'O CEP informado possui formato inválido.'})
+                  Toast.fire({ icon: 'error', title: '{{trans('system.invalid_format_zipcode')}}'})
               }
           } //end if.
           else {

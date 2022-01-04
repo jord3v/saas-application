@@ -4,7 +4,7 @@
     <form class="card card-md" method="POST" action="{{ route('login') }}" autocomplete="off">
         @csrf
         <div class="card-body">
-          <h2 class="card-title text-center mb-4">Faça login na sua conta</h2>
+          <h2 class="card-title text-center mb-4">{{ trans('system.sign_in') }}</h2>
           <div class="mb-3">
             <x-label for="email" class="form-label" :value="__('Email')" />
             <x-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus />
@@ -41,7 +41,7 @@
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path>
                  </svg>
-                Acessar com a conta Google
+                {{ trans('system.sign_in_google') }}
               </a>
             </div>
           </div>

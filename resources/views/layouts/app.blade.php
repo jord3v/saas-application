@@ -9,7 +9,7 @@
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
       <meta http-equiv="X-UA-Compatible" content="ie=edge"/>  
-      <title>{{ config('app.name', 'Laravel') }}</title>
+      <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
       <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
       <script src="https://js.stripe.com/v3/"></script>
    </head>
@@ -78,7 +78,12 @@
                      </h2>
                   </div>
                   <div class="col-auto ms-auto d-print-none">
-                     {{ $btns }}
+                     <x-breadcrumb></x-breadcrumb>
+                  </div>
+               </div>
+               <div class="row align-items-center">
+                  <div class="col-auto ms-auto d-print-none">
+                     {{ $btns }}      
                   </div>
                </div>
             </div>

@@ -31,7 +31,7 @@ class SubscriptionController extends Controller
     public function checkout()
     {
         if (tenant()->subscriptions->where('stripe_status', 'active')->count() > 0)
-            return redirect()->route('subscriptions.index')->with('toast_warning', 'Você já possui plano ativo!');
+            return redirect()->route('subscriptions.index')->with('toast_warning', trans('system.have_plan'));
 
         $plans = $this->retrievePlans();
         $tenant = tenant();
@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
     public function store(Request $request)
     {
         if (tenant()->subscriptions->where('stripe_status', 'active')->count() > 0)
-            return redirect()->route('subscriptions.index')->with('toast_warning', 'Você já possui plano ativo!');
+            return redirect()->route('subscriptions.index')->with('toast_warning', trans('system.have_plan'));
         if($request->method_payment == "?payment=boleto"){
             try {
                 $tenant = tenant();
@@ -57,7 +57,7 @@ class SubscriptionController extends Controller
                 $subscription = $tenant->newSubscription('default', $request->plan)
                                         ->create($paymentMethod->id);
             } catch (IncompletePayment $exception) {
-                return redirect()->route('subscriptions.index')->with('toast_success', 'Boleto gerado com sucesso!');
+                return redirect()->route('subscriptions.index')->with('toast_success', trans('system.billet_generated'));
             }
         }
         elseif ($request->method_payment == "?payment=cartao") {
@@ -65,21 +65,21 @@ class SubscriptionController extends Controller
         } else {
 
         }
-        return redirect()->route('subscriptions.index')->with('toast_success', 'Pagamento realizado com sucesso!');
+        return redirect()->route('subscriptions.index')->with('toast_success', trans('system.payment_successfully'));
     }
 
 
     public function cancel()
     {
         tenant()->subscription('default')->cancel();
-        return redirect()->route('subscriptions.index')->with('toast_success', 'Assinatura cancelada com sucesso!');
+        return redirect()->route('subscriptions.index')->with('toast_success', trans('system.subscription_canceled'));
     }
 
 
     public function resume()
     {
         tenant()->subscription('default')->resume();
-        return redirect()->route('subscriptions.index')->with('toast_success', 'Assinatura reativada com sucesso!');
+        return redirect()->route('subscriptions.index')->with('toast_success', trans('system.subscription_reactivated'));
     }
 
 

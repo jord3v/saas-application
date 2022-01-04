@@ -15,7 +15,7 @@
                          </svg>
                       </span>
                       <span class="nav-link-title">
-                      Página inicial
+                        {{ trans('system.dashboard') }}
                       </span>
                    </a>
                 </li>

@@ -145,12 +145,13 @@ class TenantController extends Controller
             'preferred_locales' => ['pt-BR'],
         ]);
 
-        return redirect()->back()->with('toast_success', 'Organização atualizada com sucesso!');
+        return redirect()->back()->with('toast_success', trans('system.tenant.updated'));
     }
 
 
     public function billingAddress(Request $request, $id = null)
     {
+        $request['tax_id'] = preg_replace("/[^0-9]/", "", $request->tax_id);
         $tenant = tenant();
         if(!$id){
             $this->createMethodPaymentoBoleto($request->all());
@@ -159,7 +160,7 @@ class TenantController extends Controller
             $test->delete();
             $this->createMethodPaymentoBoleto($request->all());
         }
-        return redirect()->back()->with('toast_success', 'Dados para faturamento atualizado com sucesso!');
+        return redirect()->back()->with('toast_success', trans('system.billing_data_updated'));
     }
 
 

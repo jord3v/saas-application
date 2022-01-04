@@ -78,7 +78,7 @@
                      @endif
                      
                   </div>
-                  <div class="hr-text hr-text-center hr-text-spaceless">Dados da organização</div>
+                  <div class="hr-text hr-text-center hr-text-spaceless">{{ trans('system.tenant.organization_data') }}</div>
                   <div class="card-body">
                      <div class="input-icon mb-2">
                         <span class="input-icon-addon">
@@ -94,7 +94,7 @@
                               <line x1="9" y1="18" x2="9" y2="18.01"></line>
                            </svg>
                         </span>
-                        <input type="text" class="form-control" name="name" placeholder="Nome da organização" required>
+                        <input type="text" class="form-control" name="name" placeholder="{{ trans('system.tenant.name') }}" required>
                      </div>
                      <div class="input-icon mb-2">
                         <div class="input-group input-group-flat">
