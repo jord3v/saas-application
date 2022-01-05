@@ -50,7 +50,7 @@
                      <span class="avatar avatar-sm" style="background-image: url({{$user->getFirstMediaUrl('profile') ? $user->getFirstMediaUrl('profile') : 'https://www.sevor.com.br/wp-content/uploads/elementor/thumbs/LOGO-SEVOR-ooprl9vkige2les3iup6j2dhfrnspoknxh6d0gx6o0.png'}})"></span>
                      <div class="d-none d-xl-block ps-2">
                         <div>{{ $user->name }}</div>
-                        <div class="mt-1 small text-muted">{{ $user->roles->first()->name }}</div>
+                        <div class="mt-1 small text-muted">{{ $user->roles->first()->name ?? trans('system.no_role') }}</div>
                      </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

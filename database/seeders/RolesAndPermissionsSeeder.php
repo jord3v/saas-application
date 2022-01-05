@@ -30,19 +30,23 @@ class RolesAndPermissionsSeeder extends Seeder
         // create permissions
         $permissions = [
             // roles
-            ['name' => 'role-list', 'guard_name' => 'web'],
-            ['name' => 'role-create', 'guard_name' => 'web'],
-            ['name' => 'role-edit', 'guard_name' => 'web'],
-            ['name' => 'role-delete', 'guard_name' => 'web'],
+            ['name' => 'role-list', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'role-create', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'role-edit', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'role-delete', 'type' => 'roles', 'guard_name' => 'web'],
+
+            // settings
+            ['name' => 'settings', 'type' => 'settings', 'guard_name' => 'web'],
+
+            // subscriptions
+            ['name' => 'subscriptions-list', 'type' => 'subscriptions', 'guard_name' => 'web'],
+            ['name' => 'subscriptions-create', 'type' => 'subscriptions', 'guard_name' => 'web'],
+            ['name' => 'subscriptions-edit', 'type' => 'subscriptions', 'guard_name' => 'web'],
         ];
         
         foreach ($permissions as $permission) {
             $this->permission::create($permission);
         }
-
-        // this can be done as separate statements
-        $role = $this->role::create(['name' => 'Usuário']);
-        //$role->givePermissionTo('property-edit');
 
         // or may be done by chaining
         $role = $this->role::create(['name' => 'Administrador']);

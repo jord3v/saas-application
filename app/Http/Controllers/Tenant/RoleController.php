@@ -40,7 +40,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = $this->permission->get();
+        return view('tenant.dashboard.roles.create', compact('permissions'));
     }
 
     /**
@@ -51,7 +52,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = $this->role->create(['name' => $request->name]);
+        $role->syncPermissions($request->input('permission'));
+        return redirect()->route('roles.index')->with('toast_success', trans('system.role_created'));
     }
 
     /**
@@ -73,7 +76,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(!$role = $role = $this->role->find($id))
+            return redirect()->route('dashboard');
+        $permissions = $this->permission->get();
+        return view('tenant.dashboard.roles.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -85,7 +91,11 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if(!$role = $role = $this->role->find($id))
+            return redirect()->route('dashboard');
+        $role->update($request->all());
+        $role->syncPermissions($request->input('permission'));
+        return redirect()->back()->with('toast_success', trans('system.role_updated'));
     }
 
     /**
@@ -96,6 +106,9 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(!$role = $this->role->find($id))
+            return redirect()->route('dashboard');
+        $role->delete();
+        return redirect()->back()->with('toast_success', trans('system.role_deleted'));
     }
 }

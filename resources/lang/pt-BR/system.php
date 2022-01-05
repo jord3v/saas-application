@@ -11,6 +11,7 @@ return [
     'save'                  => 'Salvar',
     'actions'               => 'Ações',
     'edit'                  => 'Editar',
+    'create'                => 'Adicionar',
     'delete'                => 'Excluir',
     'nothing_found'         => 'nada encontrado',
     'validating'            => 'Validando',
@@ -20,6 +21,10 @@ return [
     'user_profiles'         => 'Perfis de usuários',
     'sign_in'               => 'Faça login na sua conta',
     'sign_in_google'        => 'Acessar com a conta Google',
+    'cancel'                => 'Cancelar',
+    'delete_permanent'      => 'Excluir permanente',
+    'delete_sure'           => 'Tem certeza?',
+    'alert_delete'          => 'Tem certeza de que deseja remover? O clicar em excluir permanente não poderá ser desfeito.',
 
 
     'google' => [
@@ -52,7 +57,12 @@ return [
     'notfound_zipcode'      => 'O CEP informado não foi encontrado.',
 
     //roles
+    'role_created'          => 'Perfil criado com sucesso!',
+    'role_updated'          => 'Perfil atualizado com sucesso!',
+    'role_deleted'          => 'Perfil removido com sucesso!',
     'permissions'           => 'Permissões',
+    'role_details'          => 'Dados do perfil',
+    'no_role'               => 'Sem perfil atribuido',
 
     //
     'download_billet'          => 'Fazer o download do boleto',
@@ -85,5 +95,16 @@ return [
     'select_payment_method'    =>  'Selecione a forma de pagamento e o plano',
     'payment_method'           => 'Método de pagamento',
     'month'                    => 'Mês',
-    'plan'                     => 'Plano'
+    'plan'                     => 'Plano',
+
+
+    'add_role'                 => 'Adicionar perfil',
+
+    'role-list'                => 'Listar perfis',
+    'role-create'              => 'Adicionar perfil',
+    'role-edit'                => 'Editar perfil',
+    'role-delete'              => 'Excluir perfil',
+    'subscriptions-list'       => 'Listar assinatura',
+    'subscriptions-create'     => 'Adicionar assinatura',
+    'subscriptions-edit'       => 'Editar assinatura',
 ];
