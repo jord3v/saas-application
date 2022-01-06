@@ -63,6 +63,7 @@ Route::middleware([
 ])->group(function () {
     Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
     Route::resource('/profile', ProfileController::class);
+    Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'updateProfile']);
     });
     require __DIR__.'/auth.php';
 });

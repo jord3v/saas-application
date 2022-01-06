@@ -116,26 +116,25 @@
           </div>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-            Fechar
-          </a>
+          <button type="button" class="btn ml-auto" data-bs-dismiss="modal">{{ trans('system.close') }}</button>
         </div>
       </div>
     </div>
   </div>
-</x-app-layout>
+  @push('scripts')
 <script>
-    var modal = document.getElementById('modal-report')
-    modal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget
-    var number = button.getAttribute('data-bs-number')
-    var pdf = button.getAttribute('data-bs-pdf')
-    var expires_at = button.getAttribute('data-bs-expires_at')
+  var modal = document.getElementById('modal-report')
+  modal.addEventListener('show.bs.modal', function (event) {
+  var button = event.relatedTarget
+  var number = button.getAttribute('data-bs-number')
+  var pdf = button.getAttribute('data-bs-pdf')
+  var expires_at = button.getAttribute('data-bs-expires_at')
 
-    var modalTitle = modal.querySelector('.modal-title')
-    modal.querySelector('.modal-body .expire_at').innerHTML = expires_at;
-    modal.querySelector('.modal-body h3').innerHTML = number;
-    modal.querySelector('#pdf').setAttribute("href", pdf);
+  var modalTitle = modal.querySelector('.modal-title')
+  modal.querySelector('.modal-body .expire_at').innerHTML = expires_at;
+  modal.querySelector('.modal-body h3').innerHTML = number;
+  modal.querySelector('#pdf').setAttribute("href", pdf);
 })
-
 </script>
+@endpush
+</x-app-layout>

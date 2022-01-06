@@ -17,6 +17,7 @@ class TenantController extends Controller
     {
         $this->user = $user;
         $this->cashier = $cashier;
+        $this->middleware('permission:settings', ['only' => ['index', 'updateTenant', 'billingAddress']]);
     }
 
     /**
@@ -148,7 +149,7 @@ class TenantController extends Controller
         return redirect()->back()->with('toast_success', trans('system.tenant.updated'));
     }
 
-
+    
     public function billingAddress(Request $request, $id = null)
     {
         $request['tax_id'] = preg_replace("/[^0-9]/", "", $request->tax_id);

@@ -1,3 +1,4 @@
+@if(tenancy()->initialized)
 <div class="navbar-expand-md">
     <div class="collapse navbar-collapse" id="navbar-menu">
        <div class="navbar navbar-light">
@@ -33,10 +34,11 @@
                             </svg>
                          </span>
                          <span class="nav-link-title">
-                         Configurações
+                           {{ trans('system.settings') }}
                          </span>
                       </a>
                       <div class="dropdown-menu">
+                        @can('settings')
                          <a class="dropdown-item" href="{{route('settings.index')}}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-desktop" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -45,8 +47,10 @@
                                 <line x1="9" y1="16" x2="9" y2="20"></line>
                                 <line x1="15" y1="16" x2="15" y2="20"></line>
                              </svg>
-                             Sistema
+                             {{ trans('system.system') }}
                          </a>
+                         @endcan
+                         @can('roles-list')
                          <a class="dropdown-item" href="{{route('roles.index')}}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-adjustments-horizontal" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -60,8 +64,10 @@
                                <line x1="4" y1="18" x2="15" y2="18"></line>
                                <line x1="19" y1="18" x2="20" y2="18"></line>
                             </svg>
-                            Controle de acesso
+                            {{ trans('system.roles') }}
                          </a>
+                         @endcan
+                         @can('users-list')
                          <a class="dropdown-item" href="">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -70,16 +76,19 @@
                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                             </svg>
-                            Usuários do sistema
+                            {{ trans('system.users') }}
                          </a>
+                         @endcan
+                         @can('subscriptions-list')
                          <a class="dropdown-item" href="{{route('subscriptions.index')}}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wallet" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"></path>
                                <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"></path>
                             </svg>
-                            Assinatura e pagamentos
+                            {{ trans('system.subscriptions') }}
                          </a>
+                         @endcan
                       </div>
                    </li>
                 </ul>
@@ -87,4 +96,52 @@
           </div>
        </div>
     </div>
- </div>
+</div>
+@else
+<div class="navbar-expand-md">
+   <div class="collapse navbar-collapse" id="navbar-menu">
+      <div class="navbar navbar-light">
+         <div class="container-xl">
+            <ul class="navbar-nav">
+               <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('dashboard') }}">
+                     <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                           <polyline points="5 12 3 12 12 3 21 12 19 12" />
+                           <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                           <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                        </svg>
+                     </span>
+                     <span class="nav-link-title">
+                       {{ trans('system.dashboard') }}
+                     </span>
+                  </a>
+               </li>
+               <li class="nav-item {{ request()->is('dashboard/tenants*') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('tenants.index') }}">
+                     <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-skyscraper" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <line x1="3" y1="21" x2="21" y2="21"></line>
+                           <path d="M5 21v-14l8 -4v18"></path>
+                           <path d="M19 21v-10l-6 -4"></path>
+                           <line x1="9" y1="9" x2="9" y2="9.01"></line>
+                           <line x1="9" y1="12" x2="9" y2="12.01"></line>
+                           <line x1="9" y1="15" x2="9" y2="15.01"></line>
+                           <line x1="9" y1="18" x2="9" y2="18.01"></line>
+                        </svg>
+                     </span>
+                     <span class="nav-link-title">
+                       {{ trans('system.tenants') }}
+                     </span>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+@endif

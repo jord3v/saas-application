@@ -6,10 +6,13 @@ return [
     'checkout'              => 'Assinar',
     'roles'                 => 'Controle de acesso',
     'profile'               => 'Meu perfil',
+    'profile_updated'       => 'Perfil atualizado com sucesso!',
     'settings'              => 'Configurações',
     'back'                  => 'Voltar',
+    'close'                 => 'Fechar',
     'save'                  => 'Salvar',
     'actions'               => 'Ações',
+    'impersonate'           => 'Personificar',
     'edit'                  => 'Editar',
     'create'                => 'Adicionar',
     'delete'                => 'Excluir',
@@ -24,6 +27,7 @@ return [
     'cancel'                => 'Cancelar',
     'delete_permanent'      => 'Excluir permanente',
     'delete_sure'           => 'Tem certeza?',
+    'required_field'        => 'Por favor, preencha os campos obrigatórios',
     'alert_delete'          => 'Tem certeza de que deseja remover? O clicar em excluir permanente não poderá ser desfeito.',
 
 
@@ -64,6 +68,13 @@ return [
     'role_details'          => 'Dados do perfil',
     'no_role'               => 'Sem perfil atribuido',
 
+    //users
+
+    'users'                 => 'Usuários',
+    'system'                => 'Sistema',
+
+    'tenants'               => 'Organizações',
+
     //
     'download_billet'          => 'Fazer o download do boleto',
     'expire_at'                => 'Data de vencimento',
@@ -100,10 +111,18 @@ return [
 
     'add_role'                 => 'Adicionar perfil',
 
-    'role-list'                => 'Listar perfis',
-    'role-create'              => 'Adicionar perfil',
-    'role-edit'                => 'Editar perfil',
-    'role-delete'              => 'Excluir perfil',
+    'roles-list'               => 'Listar perfis',
+    'roles-create'             => 'Adicionar perfil',
+    'roles-edit'               => 'Editar perfil',
+    'roles-delete'             => 'Excluir perfil',
+
+    //
+    'users-list'               => 'Listar usuários',
+    'users-create'             => 'Adicionar usuários',
+    'users-edit'               => 'Editar usuários',
+    'users-delete'             => 'Excluir usuários',
+    
+    //
     'subscriptions-list'       => 'Listar assinatura',
     'subscriptions-create'     => 'Adicionar assinatura',
     'subscriptions-edit'       => 'Editar assinatura',

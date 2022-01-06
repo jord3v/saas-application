@@ -30,10 +30,10 @@ class RolesAndPermissionsSeeder extends Seeder
         // create permissions
         $permissions = [
             // roles
-            ['name' => 'role-list', 'type' => 'roles', 'guard_name' => 'web'],
-            ['name' => 'role-create', 'type' => 'roles', 'guard_name' => 'web'],
-            ['name' => 'role-edit', 'type' => 'roles', 'guard_name' => 'web'],
-            ['name' => 'role-delete', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'roles-list', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'roles-create', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'roles-edit', 'type' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'roles-delete', 'type' => 'roles', 'guard_name' => 'web'],
 
             // settings
             ['name' => 'settings', 'type' => 'settings', 'guard_name' => 'web'],
@@ -42,6 +42,13 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'subscriptions-list', 'type' => 'subscriptions', 'guard_name' => 'web'],
             ['name' => 'subscriptions-create', 'type' => 'subscriptions', 'guard_name' => 'web'],
             ['name' => 'subscriptions-edit', 'type' => 'subscriptions', 'guard_name' => 'web'],
+
+            //users
+            // roles
+            ['name' => 'users-list', 'type' => 'users', 'guard_name' => 'web'],
+            ['name' => 'users-create', 'type' => 'users', 'guard_name' => 'web'],
+            ['name' => 'users-edit', 'type' => 'users', 'guard_name' => 'web'],
+            ['name' => 'users-delete', 'type' => 'users', 'guard_name' => 'web'],
         ];
         
         foreach ($permissions as $permission) {

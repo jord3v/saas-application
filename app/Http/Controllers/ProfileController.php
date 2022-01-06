@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Network;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Http;
 
@@ -113,5 +114,25 @@ class ProfileController extends Controller
     public function link()
     {
         return redirect()->route('google.redirect', ['tenant' => tenant()->id, 'user' => auth()->user()->id])->with('toast_success', trans('system.google.link_success'));
+    }
+
+
+    public function updateProfile(Request $request){
+        $this->validate($request, [
+            'name' => 'required',
+            'password' => 'same:confirm-password',
+        ]);
+
+        $input = $request->all();
+
+        if(!empty($input['password'])){ 
+            $input['password'] = bcrypt($input['password']);
+        }else{
+            $input = Arr::except($input, array('password'));    
+        }
+
+        $user = auth()->user();
+        $user->update($input);
+        return redirect()->back()->with('toast_success', trans('system.profile_updated'));
     }
 }

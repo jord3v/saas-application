@@ -114,5 +114,42 @@
       </div>
    </div>
    <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+   <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+   <script>
+      const Toast = Swal.mixin({toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+      })
+   </script>
+   <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function () {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.prototype.slice.call(forms)
+         .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+               event.preventDefault()
+               event.stopPropagation()
+               Toast.fire({ icon: 'error', title: '{{trans('system.required_field')}}'})
+            }
+
+            form.classList.add('was-validated')
+            }, false)
+         })
+      })()
+   </script>
+   @stack('scripts')
    </body>
 </html>

@@ -19,7 +19,7 @@
    <div class="container-xl">
       <div class="row row-cards">
          <div class="col-12">
-            <form role="form" action="{{ route('roles.store') }}" method="post" enctype="multipart/form-data">
+            <form class="needs-validation" role="form" action="{{ route('roles.store') }}" method="post" enctype="multipart/form-data" novalidate>
                @csrf
                <div class="card mb-3">
                   <div class="card-header">
@@ -44,7 +44,7 @@
                               <label class="form-label">{{ trans('system.permissions') }}</label>
                               <div class="row g-2">
                                  @foreach($permissions->groupBy('type') as $key => $permission)
-                                 <div class="col-3">
+                                 <div class="col-12 col-md-3">
                                     <label class="form-label">{{ trans('system.'.$key) }}</label>
                                     @foreach ($permission as $item)
                                     <label class="form-check mb-2">

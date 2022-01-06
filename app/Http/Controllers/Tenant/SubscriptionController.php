@@ -16,6 +16,9 @@ class SubscriptionController extends Controller
     {
         $this->cashier = $cashier;
         $this->middleware(['auth']);
+        $this->middleware('permission:subscriptions-list', ['only' => ['index']]);
+        $this->middleware('permission:subscriptions-create', ['only' => ['checkout','store']]);
+        $this->middleware('permission:subscriptions-edit', ['only' => ['cancel', 'resume']]);
     }
 
     public function index()

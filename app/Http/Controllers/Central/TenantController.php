@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Central;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Cashier;
 
 class TenantController extends Controller
 {
@@ -11,11 +12,21 @@ class TenantController extends Controller
     /**
      * Class constructor.
      */
-    public function __construct(Tenant $tenant)
+    public function __construct(Tenant $tenant, Cashier $cashier)
     {
         $this->tenant = $tenant;
+        $this->cashier = $cashier;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        return view('central.dashboard.index');
+    }
     
     /**
      * Display a listing of the resource.
@@ -24,7 +35,8 @@ class TenantController extends Controller
      */
     public function index()
     {
-        return view('central.dashboard.index');
+        $tenants = $this->tenant->paginate(10);
+        return view('central.dashboard.tenants.index', compact('tenants'));
     }
 
     /**
@@ -95,6 +107,10 @@ class TenantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(!$tenant = $this->tenant->find($id))
+            return redirect()->route('dashboard');
+        $this->cashier->stripe()->customers->delete($tenant->stripe_id, []);
+        $tenant->delete();
+        return redirect()->back()->with('toast_success', trans('system.tenant_deleted'));
     }
 }

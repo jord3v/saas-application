@@ -34,12 +34,12 @@ exit();
                   <h3 class="card-title">{{ trans('system.select_payment_method') }}</h3>
                </div>
                <div class="card-body">
-                  <form action="{{ route('subscriptions.store') }}" method="post" class="form" id="form">
+                  <form class="needs-validation" action="{{ route('subscriptions.store') }}" method="post" class="form" id="form" novalidate>
                      @csrf
                      <div class="form-group mb-3">
                         <label class="form-label">{{ trans('system.payment_method') }}</label>
                         <div>
-                           <select class="form-select" name="method_payment" required onchange="window.location = this.options[this.selectedIndex].value">
+                           <select class="form-select" name="method_payment" onchange="window.location = this.options[this.selectedIndex].value" required>
                               <option value="">{{ trans('system.payment_method') }}</option>
                               <option value="?payment=boleto" {{$_GET['payment'] == 'boleto' ? 'selected':''}}>{{ trans('system.billet') }}</option>
                               <option value="?payment=cartao" {{$_GET['payment'] == 'cartao' ? 'selected':''}}>{{ trans('system.credit_card') }}</option>
@@ -141,7 +141,7 @@ exit();
          </div>
       </div>
    </div>
-</x-app-layout>
+   @push('scripts')
 <script>
    function selectCurSort() {
       var match = window.location.href.split('?')[1];
@@ -202,3 +202,5 @@ exit();
    })
    
 </script>
+@endpush
+</x-app-layout>

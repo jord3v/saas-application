@@ -19,7 +19,7 @@
    <div class="container-xl">
       <div class="row row-cards">
          <div class="col-12">
-            <form role="form" action="{{ route('settings.updateTenant') }}" method="post" enctype="multipart/form-data">
+            <form class="needs-validation" role="form" action="{{ route('settings.updateTenant') }}" method="post" enctype="multipart/form-data" novalidate>
                @csrf
                @method('PUT')
                <div class="card mb-3">
@@ -35,7 +35,7 @@
                                     <label class="form-label">{{ trans('system.tenant.name') }}</label>
                                     <input type="text" class="form-control" name="name" value="{{$tenant->name}}" required>
                                  </div>
-                                 <div class="col-6 col-md-3">
+                                 <div class="col-12 col-md-3">
                                     <label class="form-label">{{ __('Email') }}</label>
                                     <input type="text" class="form-control" name="email" value="{{$tenant->email}}" required>
                                  </div>
@@ -51,7 +51,7 @@
                   </div>
                </div>
             </form>
-            <form role="form" action="{{ route('settings.billingAddress', $method->id ?? '') }}" method="post" enctype="multipart/form-data">
+            <form class="needs-validation" role="form" action="{{ route('settings.billingAddress', $method->id ?? '') }}" method="post" enctype="multipart/form-data" novalidate>
                @csrf
                <div class="card mb-3">
                   <div class="card-header">
@@ -81,7 +81,7 @@
                               <div class="row mb-3">
                                  <div class="col-12 col-md-2">                                  
                                     <label class="form-label">{{ trans('system.zipcode') }}</label>
-                                    <input type="text" name="zipcode" class="form-control" data-mask="00000-000" data-mask-visible="true" autocomplete="off" onblur="pesquisacep(this.value);" value="{{$method->billing_details->address->postal_code ?? ''}}" required>
+                                    <input type="text" name="zipcode" class="form-control" data-mask="00000-000" data-mask-visible="false" autocomplete="off" onblur="pesquisacep(this.value);" value="{{$method->billing_details->address->postal_code ?? ''}}" required>
                                  </div>
                                  <div class="col-12 col-md-5">
                                     <label class="form-label">{{ trans('system.address') }}</label>
@@ -110,19 +110,8 @@
          </div>
       </div>
    </div>
-   <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-   
+   @push('scripts')
    <script>
-      const Toast = Swal.mixin({toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 2500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-      })
       function limpa_formulário_cep() {
               //Limpa valores do formulário de cep.
               document.getElementsByName('line1')[0].value=("");
@@ -188,4 +177,5 @@
       };
       
    </script>
+@endpush
 </x-app-layout>

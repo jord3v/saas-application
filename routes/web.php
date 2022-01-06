@@ -20,7 +20,8 @@ Route::get('/', function(){
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
-    Route::get('/', [TenantController::class, 'index'])->name('dashboard');
+    Route::get('/', [TenantController::class, 'dashboard'])->name('dashboard');
+    Route::resource('/tenants', TenantController::class);
 });
 
 Route::get('/criar-conta', [SiteController::class, 'create'])->name('website.create');
