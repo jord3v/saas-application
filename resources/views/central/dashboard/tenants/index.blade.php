@@ -29,6 +29,7 @@
                           <thead>
                             <tr>
                               <th class="w-50">{{ trans('system.tenant.name') }}</th>
+                              <th>{{ trans('system.domain') }}</th>
                               <th></th>
                             </tr>
                           </thead>
@@ -36,16 +37,18 @@
                               @forelse ($tenants as $tenant)
                               <tr>
                                 <td>{{ $tenant->name }}</td>
+                                <td><a href="http://{{ $tenant->domains->first()->domain }}">{{ $tenant->domains->first()->domain }}</a></td>
                                 <td class="text-end">
                                   <span class="dropdown">
                                     <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">{{ trans('system.actions') }}</button>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                       <a class="dropdown-item" href="{{route('tenants.edit', $tenant->id)}}">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                              <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
-                                              <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
-                                              <line x1="16" y1="5" x2="19" y2="8"></line>
+                                       <a class="dropdown-item" href="{{route('tenants.impersonate', $tenant->id)}}">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-key" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <circle cx="8" cy="15" r="4"></circle>
+                                             <line x1="10.85" y1="12.15" x2="19" y2="4"></line>
+                                             <line x1="18" y1="5" x2="20" y2="7"></line>
+                                             <line x1="15" y1="8" x2="17" y2="10"></line>
                                           </svg>
                                           {{ trans('system.impersonate') }}
                                        </a>

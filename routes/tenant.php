@@ -9,6 +9,7 @@ use App\Http\Controllers\Tenant\SubscriptionController;
 use App\Http\Controllers\Tenant\TenantController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Cashier;
+use Stancl\Tenancy\Features\UserImpersonation;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -33,6 +34,11 @@ Route::middleware([
         return redirect()->route('dashboard');
     });
     Route::get('/_post_tenant_registration/{token}', [TenantController::class, 'postTenantRegistration'])->name('_post_tenant_registration');
+
+    Route::get('impersonate/{token}', function ($token) {
+        return UserImpersonation::makeResponse($token);
+    })->name('impersonate');
+
     Route::get('/auth/google/callback/{code}', [TenantController::class, 'loginGoogle'])->name('login.google');
     
     Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){

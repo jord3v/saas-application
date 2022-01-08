@@ -74,6 +74,7 @@ return [
     'system'                => 'Sistema',
 
     'tenants'               => 'Organizações',
+    'domain'                => 'Domínio',
 
     //
     'download_billet'          => 'Fazer o download do boleto',
@@ -121,7 +122,7 @@ return [
     'users-create'             => 'Adicionar usuários',
     'users-edit'               => 'Editar usuários',
     'users-delete'             => 'Excluir usuários',
-    
+
     //
     'subscriptions-list'       => 'Listar assinatura',
     'subscriptions-create'     => 'Adicionar assinatura',

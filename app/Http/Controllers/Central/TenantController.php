@@ -35,7 +35,7 @@ class TenantController extends Controller
      */
     public function index()
     {
-        $tenants = $this->tenant->paginate(10);
+        $tenants = $this->tenant->with('domains')->paginate(10);
         return view('central.dashboard.tenants.index', compact('tenants'));
     }
 
@@ -112,5 +112,21 @@ class TenantController extends Controller
         $this->cashier->stripe()->customers->delete($tenant->stripe_id, []);
         $tenant->delete();
         return redirect()->back()->with('toast_success', trans('system.tenant_deleted'));
+    }
+
+
+    /**
+     * Impersonate tenant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function impersonate($id)
+    {
+        if(!$tenant = $this->tenant->find($id))
+            return redirect()->route('dashboard');
+        $domain = $tenant->domains->first()->domain;
+        $impersonate = tenancy()->impersonate($tenant, 1, 'dashboard');
+        return redirect()->route('impersonate', ['token' => $impersonate->token])->domain($domain);
     }
 }

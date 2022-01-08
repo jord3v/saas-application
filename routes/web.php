@@ -22,6 +22,8 @@ Route::get('/', function(){
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
     Route::get('/', [TenantController::class, 'dashboard'])->name('dashboard');
     Route::resource('/tenants', TenantController::class);
+    Route::get('/tenants/impersonate/{id}', [TenantController::class, 'impersonate'])->name('tenants.impersonate');
+
 });
 
 Route::get('/criar-conta', [SiteController::class, 'create'])->name('website.create');
